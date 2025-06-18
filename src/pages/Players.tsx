@@ -38,13 +38,13 @@ const Players: React.FC = () => {
           ? <PageLoader />
           : (
             <ul className={styles.list}>
-              {grandMasters.map((playerUsername) => <li onClick={() => handleOpenPlayerProfile(playerUsername)}>{playerUsername}</li>)}
+              {grandMasters.map((playerUsername, index) => <li key={index} onClick={() => handleOpenPlayerProfile(playerUsername)}>{playerUsername}</li>)}
             </ul>
           )
         }
       </div>
 
-      <p className={styles.notes}>
+      <div className={styles.notes}>
         <b>Sub-optimal Compromises:</b>
         <ul>
           <li>
@@ -55,7 +55,7 @@ const Players: React.FC = () => {
             I chose not to include icons to support the design, as I was focused on implementing the core functionality.
           </li>
         </ul>
-      </p>
+      </div>
     </>
   );
 }
