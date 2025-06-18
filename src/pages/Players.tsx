@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTitledPlayers } from "../services/playersService.ts";
 import { PlayerTitle } from "../utils/constants.ts";
+import styles from "./Players.module.scss";
 
 const Players: React.FC = () => {
   const navigate = useNavigate();
@@ -25,10 +26,23 @@ const Players: React.FC = () => {
 
   return (
     <>
-      <h1>Grand Masters</h1>
-      <ul>
+      <h1 className={styles.pageTitle}>Grand Masters</h1>
+      <ul className={styles.list}>
         {grandMasters.map((playerUsername) => <li onClick={() => handleOpenPlayerProfile(playerUsername)}>{playerUsername}</li>)}
       </ul>
+
+      <p className={styles.notes}>
+        <b>Sub-optimal Compromises:</b>
+        <ul>
+          <li>
+            The API endpoint <a href="https://api.chess.com/pub/titled/GM">https://api.chess.com/pub/titled/GM</a> does not support server-side pagination,
+            which results in the entire list of Grandmasters being displayed on the page at once.
+          </li>
+          <li>
+            I chose not to include icons to support the design, as I was focused on implementing the core functionality.
+          </li>
+        </ul>
+      </p>
     </>
   );
 }
