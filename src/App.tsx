@@ -2,10 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './layouts/Page/MainLayout';
 import Players from "./pages/Players";
 import PlayerProfile from './pages/PlayerProfile';
-
-function NotFound() {
-  return <h2>404 - Page Not Found</h2>;
-}
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   return (
@@ -14,7 +11,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Players />} />
           <Route path="profile/:userName" element={<PlayerProfile />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
