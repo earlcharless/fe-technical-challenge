@@ -41,3 +41,19 @@
     }
   }
 }
+
+@media (max-width: 599px) {
+  .profileSummary {
+    display: block;
+    padding: 20px;
+
+    .summary {
+      margin-top: 10px;
+      padding: 0;
+
+      .details {
+        display: block;
+      }
+    }
+  }
+}
