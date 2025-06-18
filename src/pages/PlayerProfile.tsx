@@ -1,25 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
 import { format, intervalToDuration } from "date-fns";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getPlayerProfile } from "../services/playersService.ts";
+import type { PlayerProfile } from "../types/types";
+import PageLoader from "../components/PageLoader.tsx";
+import styles from "./PlayerProfile.module.scss";
 
 const PlayerProfile: React.FC = () => {
   const { userName } = useParams();
-  const [profile, setProfile] = useState<any>();
+  const [profile, setProfile] = useState<PlayerProfile>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const lastOnlineRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       if (userName) {
         const { data } = await getPlayerProfile(userName);
 
         if (data) {
-          const formattedData: any = {...data};
+          const formattedData: PlayerProfile = {...data};
           
           const dateJoined = new Date(formattedData.joined * 1000);
-          formattedData.joined = format(dateJoined, "MMM d, yyyy");
+          formattedData.date_joined = format(dateJoined, "MMM d, yyyy");
 
           setProfile(formattedData);
+          setIsLoading(false);
         }
       }
     };
@@ -29,15 +35,19 @@ const PlayerProfile: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const dateTimeNow = new Date();
-      const lastOnline = new Date(profile.last_online * 1000);
-      const duration = intervalToDuration({ start: lastOnline, end: dateTimeNow });
-      const hours = String(duration.hours ?? 0).padStart(2, '0');
-      const minutes = String(duration.minutes ?? 0).padStart(2, '0');
-      const seconds = String(duration.seconds ?? 0).padStart(2, '0');
+      if (profile) {
+        const dateTimeNow = new Date();
+        const lastOnline = new Date(profile.last_online * 1000);
+        const duration = intervalToDuration({ start: lastOnline, end: dateTimeNow });
+        const hours = String(duration.hours ?? 0).padStart(2, '0');
+        const minutes = String(duration.minutes ?? 0).padStart(2, '0');
+        const seconds = String(duration.seconds ?? 0).padStart(2, '0');
 
-      if (lastOnlineRef.current) {
-        lastOnlineRef.current.textContent  = `${hours}:${minutes}:${seconds}`;
+        if (lastOnlineRef.current) {
+          lastOnlineRef.current.textContent  = `${hours}:${minutes}:${seconds}`;
+        }
+      } else {
+        clearInterval(interval)
       }
     }, 1000);
 
@@ -45,39 +55,39 @@ const PlayerProfile: React.FC = () => {
   }, [profile]);
 
 
-  if (!profile) {
-    return <>Loading</>
+  if (!profile || isLoading) {
+    return <PageLoader />
   }
 
   return (
     <>
-      <div>
-        <img src={profile.avatar} alt={profile.username} />
+      <Link to="/" className="button">Back</Link>
+      <div className={styles.profileSummary}>
+        <div className={styles.avatar}>
+          <img src={profile.avatar ?? "https://www.chess.com/bundles/web/images/user-image.007dad08.svg"} alt={profile.username} />
+        </div>
+
+        <div className={styles.summary}>
+          <h2><span>{profile.title}</span> {profile.username}</h2> 
+
+          <div className={styles.details}>
+            <div>
+              {profile.followers} <label>followers</label> <br />
+              <label>Name</label> {profile.name ?? "--"}  <br />
+              <label>Player ID</label> {profile.player_id ?? "--"}   <br />
+              <label>Joined</label> {profile.date_joined ?? "--"}<br />
+              <label>Location</label> {profile.location ?? "--"}  <br />
+            </div>
+            <div>
+              <label>Last Online</label> <span ref={lastOnlineRef}></span> <br />
+              <label>Streamer</label> {profile.is_streamer ? "Yes" : "No"}  <br />
+              <label>League</label> {profile.league ?? "--"} <br />
+              <label>Status</label> {profile.status ?? "--"}  <br />
+              <label>Verified</label> {profile.verified ? "Yes" : "No"} <br />
+            </div>
+          </div>
+        </div>
       </div>
-
-
-      country: {profile.country} <br />
-      followers: {profile.followers}  <br />
-      is_streamer: {profile.is_streamer ? "TRUE" : "FALSE"}  <br />
-
-
-      joined: {profile.joined}  <br /><br />
-
-      
-      last_online_duration: <span ref={lastOnlineRef}></span> <br />
-      last_online: {profile.last_online} <br />
-      now: {profile.now} <br />
-      <br />
-      
-      league: {profile.league} <br />
-      location: {profile.location}  <br />
-      name: {profile.name}  <br />
-      player_id: {profile.player_id}   <br />
-      status: {profile.status}  <br />
-      {/* streaming_platforms */}
-      title: {profile.title} <br />
-      username: {profile.username} <br />
-      verified: {profile.verified ? "TRUE" : "FALSE"} <br />
     </>
   );
 }

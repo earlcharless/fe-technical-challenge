@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTitledPlayers } from "../services/playersService.ts";
-import { PlayerTitle } from "../utils/constants.ts";
-import styles from "./Players.module.scss";
+import { PlayerTitle } from "../types/types.ts";
 import PageLoader from "../components/PageLoader.tsx";
+import styles from "./Players.module.scss";
 
 const Players: React.FC = () => {
   const navigate = useNavigate();
