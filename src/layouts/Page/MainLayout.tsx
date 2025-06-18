@@ -5,18 +5,12 @@ import styles from "./MainLayout.module.scss";
 const MainLayout: React.FC = () => {
   return (
     <>
-      <header>
-        <nav>
-          <h1>My App</h1>
-        </nav>
-      </header>
-
       <main className={styles.main}>
         <Outlet />
       </main>
 
-      <footer>
-        <p>© 2025 My Company</p>
+      <footer className={styles.footer}>
+        <p>© 2025 Chess.com</p>
       </footer>
     </>
   );
