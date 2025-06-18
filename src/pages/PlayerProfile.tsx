@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { format, intervalToDuration } from "date-fns";
 import { useParams, Link } from "react-router-dom";
 import { getPlayerProfile } from "../services/playersService.ts";
-import type { PlayerProfile } from "../types/types";
+import type { PlayerSummary } from "../types/types";
 import PageLoader from "../components/PageLoader.tsx";
 import styles from "./PlayerProfile.module.scss";
 
 const PlayerProfile: React.FC = () => {
   const { userName } = useParams();
-  const [profile, setProfile] = useState<PlayerProfile>();
+  const [profile, setProfile] = useState<PlayerSummary>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const lastOnlineRef = useRef<HTMLSpanElement>(null);
 
@@ -19,7 +19,7 @@ const PlayerProfile: React.FC = () => {
         const { data } = await getPlayerProfile(userName);
 
         if (data) {
-          const formattedData: PlayerProfile = {...data};
+          const formattedData: PlayerSummary = {...data};
           
           const dateJoined = new Date(formattedData.joined * 1000);
           formattedData.date_joined = format(dateJoined, "MMM d, yyyy");

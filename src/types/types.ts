@@ -8,7 +8,7 @@ export enum PlayerTitle {
  GRAND_MASTER = "GM",
 }
 
-export type PlayerProfile = {
+export type PlayerSummary = {
   avatar: string;
   followers: number;
   is_streamer: boolean;
@@ -16,6 +16,7 @@ export type PlayerProfile = {
   date_joined?: string;
   last_online: number;
   league: string;
+  location: string;
   name: string;
   player_id: number;
   status: "string";
