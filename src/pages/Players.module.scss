@@ -2,21 +2,25 @@
   text-align: center;
 }
 
-.list {
-  list-style-type: none;
-  width: 600px;
-  max-height: calc(100vh - 500px);
-  padding: 0;
-  margin: 0 auto;
-  overflow-y: auto;
+.listContainer {
+  min-height: 400px;
 
-  li {
-    cursor: pointer;
-    padding: 10px 15px;
-    border-bottom: 1px solid #3e3d38;
-    
-    &:hover {
-      background: #262522;
+  .list {
+    list-style-type: none;
+    width: 600px;
+    max-height: calc(100vh - 500px);
+    padding: 0;
+    margin: 0 auto;
+    overflow-y: auto;
+
+    li {
+      cursor: pointer;
+      padding: 10px 15px;
+      border-bottom: 1px solid #3e3d38;
+      
+      &:hover {
+        background: #262522;
+      }
     }
   }
 }

@@ -3,17 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { getTitledPlayers } from "../services/playersService.ts";
 import { PlayerTitle } from "../utils/constants.ts";
 import styles from "./Players.module.scss";
+import PageLoader from "../components/PageLoader.tsx";
 
 const Players: React.FC = () => {
   const navigate = useNavigate();
   const [grandMasters, setGrandMasters] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const { data } = await getTitledPlayers(PlayerTitle.GRAND_MASTER);
 
       if (data) {
         setGrandMasters(data);
+        setIsLoading(false);
       }
     };
 
@@ -27,9 +31,18 @@ const Players: React.FC = () => {
   return (
     <>
       <h1 className={styles.pageTitle}>Grand Masters</h1>
-      <ul className={styles.list}>
-        {grandMasters.map((playerUsername) => <li onClick={() => handleOpenPlayerProfile(playerUsername)}>{playerUsername}</li>)}
-      </ul>
+
+      <div className={styles.listContainer}>
+        {
+          isLoading
+          ? <PageLoader />
+          : (
+            <ul className={styles.list}>
+              {grandMasters.map((playerUsername) => <li onClick={() => handleOpenPlayerProfile(playerUsername)}>{playerUsername}</li>)}
+            </ul>
+          )
+        }
+      </div>
 
       <p className={styles.notes}>
         <b>Sub-optimal Compromises:</b>
