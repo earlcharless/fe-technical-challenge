@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './layouts/Page/MainLayout';
 import Players from "./pages/Players";
 import PlayerProfile from './pages/PlayerProfile';
