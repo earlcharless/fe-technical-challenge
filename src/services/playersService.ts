@@ -1,6 +1,5 @@
 import axios from "axios"
-import type { PlayerTitle } from "../utils/constants";
-import type { ApiResponse } from "../types/types";
+import type { ApiResponse, PlayerProfile, PlayerTitle } from "../types/types";
 import api from "./api";
 
 const getTitledPlayers = async (title: PlayerTitle): Promise<ApiResponse<string[]>> => {
@@ -29,7 +28,7 @@ const getTitledPlayers = async (title: PlayerTitle): Promise<ApiResponse<string[
   }
 };
 
-const getPlayerProfile = async (userName: string): Promise<ApiResponse<string[]>> => {
+const getPlayerProfile = async (userName: string): Promise<ApiResponse<PlayerProfile>> => {
   try {
     const { status, data } = await api.get(`/player/${userName}`);
 
