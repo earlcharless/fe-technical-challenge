@@ -1,12 +1,13 @@
 .main {
   max-height: calc(100vh - 100px);
   width: 800px;
-  margin: 50px auto 20px;
+  margin: 50px auto;
   overflow: hidden;
 
   @media (max-width: 599px) {
+    max-height: fit-content;
     width: 100%;
-    margin: 30px 10px 10px 10px;
+    margin: 30px 10px 100px;
   }
 
   @media (min-width: 600px) and (max-width: 1023px) {
@@ -15,7 +16,7 @@
 
   @media (max-height: 870px) {
     max-height: fit-content;
-    margin: 30px auto 60px;
+    margin: 30px auto 100px;
   }
 }
 

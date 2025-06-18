@@ -45,19 +45,6 @@ const Players: React.FC = () => {
     <>
       <h1 className={styles.pageTitle}>Grand Masters</h1>
 
-      {
-        isLoading
-        ? <PageLoader />
-        : (
-          <div className={styles.listContainer}>
-            <ul className={styles.list}>
-              {grandMasters.map((playerUsername, index) => <li key={index} onClick={() => handleOpenPlayerProfile(playerUsername)}>{playerUsername}</li>)}
-            </ul>
-          </div>
-        )
-      }
-      
-
       <div className={styles.notes}>
         <b>Sub-optimal Compromises:</b>
         <ul>
@@ -70,6 +57,18 @@ const Players: React.FC = () => {
           </li>
         </ul>
       </div>
+
+      {
+        isLoading
+        ? <PageLoader />
+        : (
+          <div className={styles.listContainer}>
+            <ul className={styles.list}>
+              {grandMasters.map((playerUsername, index) => <li key={index} onClick={() => handleOpenPlayerProfile(playerUsername)}>{playerUsername}</li>)}
+            </ul>
+          </div>
+        )
+      }
     </>
   );
 }

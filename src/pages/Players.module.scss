@@ -3,6 +3,7 @@
 }
 
 .listContainer {
+  margin-top: 10px;
   min-height: 400px;
 
   .list {
@@ -26,11 +27,8 @@
 }
 
 .notes {
-  margin-top: 25px;
+  margin-top: 15px;
   padding: 20px;
-  background-color: #262522;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 599px) {
