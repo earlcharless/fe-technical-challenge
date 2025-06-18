@@ -5,18 +5,26 @@ import { getPlayerProfile } from "../services/playersService.ts";
 import type { PlayerSummary } from "../types/types";
 import PageLoader from "../components/PageLoader.tsx";
 import styles from "./PlayerProfile.module.scss";
+import ErrorMessage from "../components/ErrorMessage.tsx";
 
 const PlayerProfile: React.FC = () => {
   const { userName } = useParams();
   const [profile, setProfile] = useState<PlayerSummary>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const lastOnlineRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+      setErrorMessage("");
+
       if (userName) {
-        const { data } = await getPlayerProfile(userName);
+        const { data, errors } = await getPlayerProfile(userName);
+
+        if (errors) {
+          setErrorMessage(errors);
+        }
 
         if (data) {
           const formattedData: PlayerSummary = {...data};
@@ -25,8 +33,9 @@ const PlayerProfile: React.FC = () => {
           formattedData.date_joined = format(dateJoined, "MMM d, yyyy");
 
           setProfile(formattedData);
-          setIsLoading(false);
         }
+
+        setIsLoading(false);
       }
     };
 
@@ -54,6 +63,15 @@ const PlayerProfile: React.FC = () => {
     return () => clearInterval(interval);
   }, [profile]);
 
+
+  if (errorMessage) {
+    return (
+      <>
+        <Link to="/" className="button">Back</Link>
+        <ErrorMessage message={errorMessage} />
+      </>
+    )
+  }
 
   if (!profile || isLoading) {
     return <PageLoader />
