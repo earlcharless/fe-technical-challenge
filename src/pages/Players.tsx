@@ -4,21 +4,30 @@ import { getTitledPlayers } from "../services/playersService.ts";
 import { PlayerTitle } from "../types/types.ts";
 import PageLoader from "../components/PageLoader.tsx";
 import styles from "./Players.module.scss";
+import ErrorMessage from "../components/ErrorMessage.tsx";
 
 const Players: React.FC = () => {
   const navigate = useNavigate();
   const [grandMasters, setGrandMasters] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const { data } = await getTitledPlayers(PlayerTitle.GRAND_MASTER);
+      setErrorMessage("");
+
+      const { data, errors } = await getTitledPlayers(PlayerTitle.GRAND_MASTER);
+
+      if (errors) {
+        setErrorMessage(errors);
+      }
 
       if (data) {
         setGrandMasters(data);
-        setIsLoading(false);
       }
+
+      setIsLoading(false);
     };
 
     fetchData();
@@ -28,21 +37,26 @@ const Players: React.FC = () => {
     navigate(`profile/${playerUsername}`);
   };
 
+  if (errorMessage) {
+    return <ErrorMessage message={errorMessage} />
+  }
+
   return (
     <>
       <h1 className={styles.pageTitle}>Grand Masters</h1>
 
-      <div className={styles.listContainer}>
-        {
-          isLoading
-          ? <PageLoader />
-          : (
+      {
+        isLoading
+        ? <PageLoader />
+        : (
+          <div className={styles.listContainer}>
             <ul className={styles.list}>
               {grandMasters.map((playerUsername, index) => <li key={index} onClick={() => handleOpenPlayerProfile(playerUsername)}>{playerUsername}</li>)}
             </ul>
-          )
-        }
-      </div>
+          </div>
+        )
+      }
+      
 
       <div className={styles.notes}>
         <b>Sub-optimal Compromises:</b>
